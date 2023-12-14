@@ -1,0 +1,21 @@
+# general
+.DS_Store
+*.srt
+*.mp3
+*.json
+
+# environment artifacts
+.venv
+.env
+venv/
+venv.bak/
+.vscode/
+
+# python artifacts
+__pycache__
+*.egg-info
+dist/
+
+# build
+build/
+poetry.lock

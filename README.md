@@ -1,88 +1,136 @@
-> Copy the entire contents of https://github.com/deepgram-starters/deepgram-starters-ui to the `./static/` folder.
+# YouTube Captioner by Deepgram
 
-> The name of the project and repo, is less important than the correct configuration of the `deepgram.toml` file, if you wish for it to be included in future onboarding workflows.
+This is a utility/application for creating Subtitles (ie Captions) for **existing** videos on YouTube.
 
-# [Usecase] [Language] Starter
+## Why the YouTube Captioner?
 
-> Write an intro for this project
+I created this utility mainly out of necessity and selfishness.
 
-Nifty little into, maybe a screenshot.
+The necessity is that adding Subtitles (ie Captions) to your YouTube videos provides:
 
-## Sign-up to Deepgram
+- individuals who are hard of hearing the ability to enjoy content on YouTube
+- accurate subtitles thereby indexing of your YouTube content
 
-> Please leave this section unchanged, unless providing a UTM on the URL.
+The selfishness is that I produce a fair amount of content and creating subtitles was time consuming to go through this manual process for creating subtitles:
 
-Before you start, it's essential to generate a Deepgram API key to use in this project. [Sign-up now for Deepgram](https://console.deepgram.com/signup).
+- find the mp4 or video that I wanted to create subtitles for
+- generate subtitles/captioning by submitting the mp4 to a Speech-to-Text service like Deepgram
+- navigate to YouTube, find the video and then upload the Subtitles to said video
 
-## Quickstart
+There is a fair amount of setup to this project. So the complexity and time is front loaded, but when configured, this utility will:
 
-> Detail the manual steps to get started.
+- download your video from YouTube
+- convert your video to mp3 (audio only) to reduce the upload time to Deepgram
+- submit the mp3 to Deepgram to obtain the transcription
+- convert the transcription to SRT subtitles
+- upload and **publish** the SRT subtitles to your video
 
-e.g.
-
-### Manual
-
-Follow these steps to get started with this starter application.
-
-#### Clone the repository
-
-Go to GitHub and [clone the repository](https://github.com/deepgram-starters/prerecorded-node-starter).
-
-#### Install dependencies
-
-Install the project dependencies.
+This utility does all that from a single command:
 
 ```bash
-npm install
+python caption_youtube_video.py --url "<your videos link in youtube>"
 ```
 
-#### Edit the config file
+Depending on the length of your video, in about 30-60 seconds, you will have published subtitles on your video.
 
-> Config file can be any appropriate file for the framework/language. For e.g.
-> Node is using a config.json file, while Python is only use .env files
+## Prerequisites
 
-Copy the code from `sample.env` and create a new file called `.env`. Paste in the code and enter your API key you generated in the [Deepgram console](https://console.deepgram.com/).
+This utility makes use of:
 
-```json
-DEEPGRAM_API_KEY=%api_key%
-```
+- [youtube-dl](https://github.com/ytdl-org/youtube-dl/) - which is a open source library to download public YouTube videos (I have been using this for years)
+- [Deepgram Python SDK](https://github.com/deepgram/deepgram-python-sdk) - this generates the SRT subtitles on the [Deepgram Platform](https://console.deepgram.com/)
+- [YouTube Data API](https://developers.google.com/youtube/v3) - specifically [Google's Python YouTube Data SDK](https://developers.google.com/youtube/v3/quickstart/python)
 
-#### Run the application
+### Info About youtube-dl
 
-> to support the UI, it must always run on port 8080
+The [youtube-dl](https://github.com/ytdl-org/youtube-dl/) is used widely, but since Google doesn't like individuals downloading YouTube videos, this project is unsanctioned by Google. Google occassionally changes things that breaks this project, but after a few days, things start working again.
 
-The `dev` script will run a web and API server concurrently. Once running, you can [access the application in your browser](http://localhost:8080/).
+This does mean that you need to `git clone` this project and do a developer install of this project into `pip`. After cloning, change directory into the repo on disk and then do a `pip install -e .` to make this library available to python.
+
+### Deepgram Transcription
+
+[Sign up](https://console.deepgram.com/signup?utm_source=dg-streamlit-blog) for a Deepgram account and get $200 in Free Credit (up to 45,000 minutes), absolutely free. No credit card needed!
+
+We encourage you to explore Deepgram by checking out the following resources:
+
+- [Deepgram API Playground](https://playground.deepgram.com/?smart_format=true&language=en&model=nova-2)
+- [Deepgram Documentation](https://developers.deepgram.com/docs)
+- [Deepgram Starter Apps](https://github.com/deepgram-starters)
+
+#### Set your API Key as an Environment Variable named "DEEPGRAM_API_KEY"
+
+Create an API in the Deepgram Console. Then set your API Key as an environment variable.
+
+If using bash, this could be done in your `~/.bash_profile` like so:
 
 ```bash
-npm start
+export DEEPGRAM_API_KEY = "YOUR_DEEPGRAM_API_KEY"
 ```
 
-## What is Deepgram?
+### YouTube Data API
 
-Deepgram is an AI speech platform which specializes in (NLU) Natural Language Understanding features and Transcription. It can help get the following from your audio.
+You need to have a [Google Cloud account](https://console.cloud.google.com/), but if you are using YouTube, you probably don't even know you actually have one. You might need to click a button that says "Try for Free", but that would be about it.
 
-- [Speaker diarization](https://deepgram.com/product/speech-understanding/)
-- [Language detection](https://deepgram.com/product/speech-understanding/)
-- [Summarization](https://deepgram.com/product/speech-understanding/)
-- [Topic detection](https://deepgram.com/product/speech-understanding/)
-- [Language translation](https://deepgram.com/product/speech-understanding/)
-- [Sentiment analysis](https://deepgram.com/product/speech-understanding/)
-- [Entity detection](https://deepgram.com/product/speech-understanding/)
-- [Transcription](https://deepgram.com/product/transcription/)
-- [Redaction](https://deepgram.com/product/transcription/)
+If you have the [YouTube Data API](https://developers.google.com/youtube/v3) enabled already, you can skip this step. Navigate to your [APIs & Services Dashboard](https://console.cloud.google.com/apis/dashboard) and select the project you want use for [YouTube Data API](https://developers.google.com/youtube/v3), click `+ Enable APIs & Services` and search for `YouTube Data API v3`, and then click `Enable` to enable the API.
 
-## Create a Free Deepgram Account
+![API & Services](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/1-api-and-services.png)
 
-Before you start, it's essential to generate a Deepgram API key to use in our starter applications. [Sign-up now for Deepgram](https://console.deepgram.com/signup).
+![Enable YouTube Data API v3](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/2-search-for-youtube-data-api-v3.png)
 
-## Issue Reporting
+In order to access and manage your YouTube content, you need to create an OAuth Client ID. In `APIs & Services`, click `Credentials` and then click `Create Credentials`.
 
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Security Policy](./SECURITY.md) details the procedure for contacting Deepgram.
+![Create an OAuth Client ID](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/3-create-oauth-client-id.png)
 
-## Author
+For your OAuth Client ID settings, select `Desktop app` in the `Application type` and then create a `Name` for your OAuth Client ID.
 
-[Deepgram](https://deepgram.com)
+![OAuth Client ID Settings](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/4-oauth-settings.png)
 
-## License
+Then you need to give your OAuth Client ID access to your YouTube content. First, click `OAuth consent screen`.
 
-This project is licensed under the MIT license. See the [LICENSE](./LICENSE) file for more info.
+![OAuth Client ID Settings](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/5-oauth-consent-screen.png)
+
+Then access is granted by email address. Scroll down and select `+ ADD USERS` and then enter the email account associated with your YouTube account/content.
+
+![OAuth Client ID Settings](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/5-oauth-consent-screen.png)
+
+### ffmpeg and ffprobe
+
+The last thing you will need is [ffmpeg and ffprobe](https://www.ffmpeg.org/download.html) installed and accessible on your `PATH`. A typical location to install something like this would be `/usr/local/bin`. If the binaries don't have execute permissions, don't forget to `chmod +x ./ffmpeg` and `chmod +x ./ffprobe`.
+
+## Running the Utility
+
+If you chose to set an environment variable in your shell profile (ie `.bash_profile`) you can run the example at the root of this repo like so:
+
+```bash
+python caption_youtube_video.py --url "<your videos link in youtube>"
+```
+
+or this could also be done by a simple export of the API Key before executing your Go application:
+
+```bash
+DEEPGRAM_API_KEY="YOUR_DEEPGRAM_API_KEY" python caption_youtube_video.py --url "<your videos link in youtube>"
+```
+
+That's it! No joke!
+
+## Development and Contributing
+
+Interested in contributing? We ❤️ pull requests!
+
+To make sure our community is safe for all, be sure to review and agree to our
+[Code of Conduct](./CODE_OF_CONDUCT.md). Then see the
+[Contribution](./CONTRIBUTING.md) guidelines for more information.
+
+## Getting Help
+
+We love to hear from you so if you have questions, comments or find a bug in the
+project, let us know! You can either:
+
+- [Open an issue](https://github.com/deepgram-devs/youtube-captioner/issues) on this repository
+- Join us on [Discord](https://dpgr.am/discord)
+- Ask a question, share the cool things you're working on, or see what else we have going on in our [Community Forum](https://github.com/orgs/deepgram/discussions/)
+- Tweet at us! We're [@DeepgramAI on Twitter](https://twitter.com/DeepgramAI)
+
+## Further Reading
+
+Check out the Developer Documentation at [https://developers.deepgram.com/](https://developers.deepgram.com/)
