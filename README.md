@@ -91,7 +91,7 @@ Then you need to give your OAuth Client ID access to your YouTube content. First
 
 Then access is granted by email address. Scroll down and select `+ ADD USERS` and then enter the email account associated with your YouTube account/content.
 
-![OAuth Client ID Settings](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/5-oauth-consent-screen.png)
+![OAuth Client ID Settings](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/6-oauth-test-users.png)
 
 ### ffmpeg and ffprobe
 
@@ -111,7 +111,31 @@ or this could also be done by a simple export of the API Key before executing yo
 DEEPGRAM_API_KEY="YOUR_DEEPGRAM_API_KEY" python caption_youtube_video.py --url "<your videos link in youtube>"
 ```
 
-That's it! No joke!
+During the Subtitle process, the application is going to request access to your YouTube content.
+
+![Asking for Access](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/10-running-the-command.png)
+
+You will need to verify this application's access.
+
+![Verify the Application](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/11-verify-application.png)
+
+You need to select the Gmail account associated with your YouTube content. If you have multiple Gmail accounts logged in, you will see them here.
+
+![Select Account for YouTube](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/12-youtube-select-account.png)
+
+Then you need to authorize the application.
+
+![Authorize the Application](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/13-authorize-application.png)
+
+Copy the `Authorization Code` to be used in the utility/application.
+
+![Authorize the Application](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/14-copy-authoization-code.png)
+
+Then paste the `Authorization Code` into the console.
+
+![Paste Authorization Code into Console](https://raw.githubusercontent.com/deepgram-devs/youtube-captioner/main/images/15-paste-authorization-code-into-console.png)
+
+That might seem like a lot, but it's a time saver! That's it! No joke!
 
 ## Development and Contributing
 
