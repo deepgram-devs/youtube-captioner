@@ -1,7 +1,7 @@
 # pip install -r requirements-dev.txt
 # For youtube-dl, you need to `git clone` and `pip install -e .` it
 
-deepgram-sdk==v3.0.0-rc.1
+deepgram-sdk==v3.0.0
 deepgram-captions==v1.1.0
 google-api-python-client==1.7.2
 google-auth==2.14.1
